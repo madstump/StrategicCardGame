@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Strategic Card Game Builder</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #eef2f7;
+            padding: 20px;
+            max-width: 800px;
+            margin: auto;
+        }
+        .question {
+            display: none;
+            margin-bottom: 20px;
+        }
+        .question.active {
+            display: block;
+        }
+        .result {
+            display: none;
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px #ccc;
+        }
+        button {
+            background-color: #2c3e50;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #1abc9c;
+        }
+    </style>
+</head>
+<body>
+
+<h1>🧠 Strategic Card Game Builder</h1>
+<div class="question active" id="q1">
+    <p><strong>1. What kind of strategy do you want players to use?</strong></p>
+    <button onclick="nextQuestion('deck_build')">Building a strong deck over time</button><br>
+    <button onclick="nextQuestion('resource_manage')">Managing resources or currency</button><br>
+    <button onclick="nextQuestion('set_combo')">Making combos or matching sets</button>
+</div>
+
+<div class="question" id="q2">
+    <p><strong>2. How do you want players to interact?</strong></p>
+    <button onclick="nextQuestion('solo_focus')">Focus on their own board/strategy</button><br>
+    <button onclick="nextQuestion('direct_attack')">Directly affect each other’s progress</button><br>
+    <button onclick="nextQuestion('limited_block')">Limited blocking or interference</button>
+</div>
+
+<div class="question" id="q3">
+    <p><strong>3. How much luck should be in the game?</strong></p>
+    <button onclick="nextQuestion('high_control')">Very little – skill over luck</button><br>
+    <button onclick="nextQuestion('some_luck')">A little luck to keep it interesting</button><br>
+    <button onclick="nextQuestion('random_fun')">Lots of twists and randomness</button>
+</div>
+
+<div class="question" id="q4">
+    <p><strong>4. What kind of theme fits your vision?</strong></p>
+    <button onclick="nextQuestion('economic')">Money, markets, or business</button><br>
+    <button onclick="nextQuestion('fantasy_war')">Magic, monsters, or kingdoms</button><br>
+    <button onclick="nextQuestion('sci_fi_tech')">Tech, space, or cyber worlds</button><br>
+    <button onclick="nextQuestion('real_world')">Something close to real life</button><br>
+    <button onclick="nextQuestion('abstract')">No theme, just gameplay</button>
+</div>
+
+<div class="question" id="q5">
+    <p><strong>5. What should players feel after playing?</strong></p>
+    <button onclick="showResult('smart')">Like they outsmarted their opponents</button><br>
+    <button onclick="showResult('builder')">Like they built something great</button><br>
+    <button onclick="showResult('balancer')">Like they managed risk well</button>
+</div>
+
+<div class="result" id="resultBox">
+    <h2>Your Game Blueprint</h2>
+    <p id="gameSummary"></p>
+    <button onclick="restartQuiz()">🔁 Retry</button>
+</div>
+
+<script>
+    let currentQuestion = 1;
+    let answers = [];
+
+    function nextQuestion(answer) {
+        answers.push(answer);
+        document.getElementById("q" + currentQuestion).classList.remove("active");
+        currentQuestion++;
+        document.getElementById("q" + currentQuestion).classList.add("active");
+    }
+
+    function showResult(finalAnswer) {
+        answers.push(finalAnswer);
+        document.getElementById("q" + currentQuestion).classList.remove("active");
+        document.getElementById("resultBox").style.display = "block";
+        document.getElementById("gameSummary").innerText = generateSummary();
+    }
+
+    function generateSummary() {
+        const strategy = answers[0];
+        const interaction = answers[1];
+        const luck = answers[2];
+        const theme = answers[3];
+        const feeling = answers[4];
+
+        let strategyText = strategy === 'deck_build' ? "build decks over time with long-term planning" :
+                          strategy === 'resource_manage' ? "manage and spend resources carefully" :
+                          "form set collections and card combos";
+        let interactionText = interaction === 'solo_focus' ? "focus on their own board with minimal interference" :
+                              interaction === 'direct_attack' ? "attack or block each other directly" :
+                              "occasionally interfere or block others";
+        let luckText = luck === 'high_control' ? "is mostly skill-based with little randomness" :
+                       luck === 'some_luck' ? "has a healthy balance of skill and luck" :
+                       "includes plenty of random surprises";
+        let themeText = theme === 'economic' ? "economic or business-themed" :
+                        theme === 'fantasy_war' ? "fantasy-themed with battles and power" :
+                        theme === 'sci_fi_tech' ? "science fiction or tech-based" :
+                        theme === 'real_world' ? "realistic and grounded in real life" :
+                        "purely abstract with no theme";
+        let feelingText = feeling === 'smart' ? "feel clever and proud of their strategies" :
+                          feeling === 'builder' ? "feel like they created something strong" :
+                          "feel like they balanced risk like a pro";
+
+        return `Your strategic card game should allow players to ${strategyText}, while they ${interactionText}. The game ${luckText}, and is based around a ${themeText} style. After playing, players should ${feelingText}. Start by designing 3-5 card types that support your strategy and theme!`;
+    }
+
+    function restartQuiz() {
+        answers = [];
+        document.getElementById("resultBox").style.display = "none";
+        currentQuestion = 1;
+        document.getElementById("q1").classList.add("active");
+    }
+</script>
+
+</body>
+</html>
